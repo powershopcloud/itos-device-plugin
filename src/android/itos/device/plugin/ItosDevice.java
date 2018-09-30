@@ -37,7 +37,7 @@ public class ItosDevice extends CordovaPlugin {
     public static final int REQUEST_CODE = 0x0ba7c0de;
 
     private static final String PRINT = "print";
-    private static final String ENCODE = "encode";
+    //private static final String ENCODE = "encode";
     private static final String CANCELLED = "cancelled";
     private static final String FORMAT = "format";
     private static final String TEXT = "text";
