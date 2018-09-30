@@ -22,6 +22,7 @@ import android.content.pm.PackageManager;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult;
+import org.apache.cordova.PluginResult.Status;
 import org.apache.cordova.PermissionHelper;
 
 import android.content.Context;
@@ -29,8 +30,6 @@ import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
