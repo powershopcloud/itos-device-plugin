@@ -12,7 +12,7 @@
     <clobbers target="cordova.plugins.itos"/>
   </js-module>
   <platform name="android">
-    <source-file src="src/android/itos/device/plugins/ItosDevice.java" target-dir="src/com/phonegap/plugins/itosdevice"/>
+    <source-file src="src/android/itos/device/plugin/ItosDevice.java" target-dir="src/com/phonegap/plugin/itosdevice"/>
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="ItosDevice">
         <param name="android-package" value="com.phonegap.plugins.itosdevice.ItosDevice"/>
