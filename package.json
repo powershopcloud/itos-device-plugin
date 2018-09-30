@@ -1,0 +1,34 @@
+{
+  "name": "itos-device-plugin",
+  "version": "1.0.1",
+  "description": "",
+  "cordova": {
+    "id": "itos-device-plugin",
+    "platforms": [
+      "android",
+      "browser"
+    ]
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "ecosystem:phonegap",
+    "cordova-android",
+    "cordova-browser",
+    "cordova:plugin"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "author": "Adobe PhoneGap Team",
+  "license": "MIT",
+  "scripts": {
+    "test": "jasmine-node --color spec"
+  },
+  "devDependencies": {
+    "jasmine-node": "1.14.5",
+    "pluginpub": "^0.0.6"
+  }
+}

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="itos-device-plugin" version="1.0">
+  <name>Itos Device</name>
+  <description></description>
+  <license>MIT</license>
+  <repo></repo>
+  <issue></issue>
+  <engines>
+    <engine name="cordova" version=">=3.0.0"/>
+  </engines>
+  <js-module src="www/itosdevice.js" name="ItosDevice">
+    <clobbers target="cordova.plugins.itos"/>
+  </js-module>
+  <platform name="android">
+    <source-file src="src/android/itos/device/plugins/ItosDevice.java" target-dir="src/com/phonegap/plugins/itosdevice"/>
+    <config-file target="res/xml/config.xml" parent="/*">
+      <feature name="ItosDevice">
+        <param name="android-package" value="com.phonegap.plugins.itosdevice.ItosDevice"/>
+      </feature>
+    </config-file>
+    <config-file target="AndroidManifest.xml" parent="/manifest/application">
+    </config-file>
+    <config-file target="AndroidManifest.xml" parent="/manifest">
+      <uses-permission android:name="android.permission.CAMERA"/>
+      <uses-feature android:name="android.hardware.camera" android:required="true"/>
+    </config-file>
+    <framework src="src/android/itosdevice.gradle" custom="true" type="gradleReference"/>
+    <resource-file src="src/android/SDKItosDeviceLink.aar" target="libs/SDKItosDeviceLink.aar"/>
+    <dependency id="cordova-plugin-compat" version="^1.0.0"/>
+  </platform>
+</plugin>
