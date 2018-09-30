@@ -24,9 +24,42 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult;
 import org.apache.cordova.PermissionHelper;
 
-import com.google.zxing.client.android.CaptureActivity;
-import com.google.zxing.client.android.encode.EncodeActivity;
-import com.google.zxing.client.android.Intents;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
+import android.util.Log;
+import android.view.View;
+import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.itos.sdk.cm5.deviceLibrary.Beeper.Beeper;
+import com.itos.sdk.cm5.deviceLibrary.DeviceResult;
+import com.itos.sdk.cm5.deviceLibrary.Led.Led;
+import com.itos.sdk.cm5.deviceLibrary.Led.LightMode;
+import com.itos.sdk.cm5.deviceLibrary.Printer.Align;
+import com.itos.sdk.cm5.deviceLibrary.Printer.Printer;
+import com.itos.sdk.cm5.deviceLibrary.Printer.PrinterCallbacks;
+import com.itos.sdk.cm5.deviceLibrary.scanner.Scanner;
+import com.itos.sdk.cm5.deviceLibrary.scanner.ScannerCallbacks;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * This calls out to the ZXing barcode reader and returns the result.
@@ -98,8 +131,6 @@ public class ItosDevice extends CordovaPlugin {
         callbackContext.error("User did not specify data to encode");
         return true;
         if (action.equals(PRINT)) {
-            Log.i("Hola");
-
             //JSONObject obj = args.optJSONObject(0);
             
             /*String type = obj.optString(TYPE);
@@ -141,9 +172,6 @@ public class ItosDevice extends CordovaPlugin {
                 }
             } );
 
-        } else if (action.equals(SCAN)) {
-
-           return true;
         } else {
             return false;
         }
