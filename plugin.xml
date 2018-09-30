@@ -25,6 +25,6 @@
       <uses-feature android:name="android.hardware.camera" android:required="true"/>
     </config-file>
     <framework src="src/android/itosdevice.gradle" custom="true" type="gradleReference"/>
-    <resource-file src="src/android/SDKItosDeviceLink.aar" target="libs/SDKItosDeviceLink.aar"/>
+    <resource-file src="src/android/itosdevice.aar" target="libs/itosdevice.aar"/>
   </platform>
 </plugin>
