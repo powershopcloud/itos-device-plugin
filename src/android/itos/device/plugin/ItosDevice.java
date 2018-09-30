@@ -127,8 +127,6 @@ public class ItosDevice extends CordovaPlugin {
         this.callbackContext = callbackContext;
         this.requestArgs = args;
 
-        callbackContext.error("User did not specify data to encode");
-        return true;
         if (action.equals(PRINT)) {
             //JSONObject obj = args.optJSONObject(0);
             
@@ -165,8 +163,8 @@ public class ItosDevice extends CordovaPlugin {
 
                 @Override
                 public void onPrintResult( int retCode ) {
-                    PluginResult result = new PluginResult(PluginResult.Status.RESULT_OK);
-                    this.callbackContext.sendPluginResult(result);
+                    //PluginResult result = new PluginResult(PluginResult.Status.RESULT_OK);
+                    //this.callbackContext.sendPluginResult(result);
                     //showMessage( String.format( "PrintResult: %d", retCode ) );
                 }
             } );
