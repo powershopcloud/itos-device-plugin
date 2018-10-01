@@ -134,11 +134,6 @@ public class ItosDevice extends CordovaPlugin {
             //String type = obj.optString(TYPE);
             JSONArray data = obj.optJSONArray(DATA);
 
-            // If the type is null then force the type to text
-            if (type == null) {
-                type = TEXT_TYPE;
-            }
-
             if (data == null) {
                 callbackContext.error("User did not specify data to print");
                 return true;
