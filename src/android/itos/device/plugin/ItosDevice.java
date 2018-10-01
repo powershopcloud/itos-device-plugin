@@ -143,7 +143,7 @@ public class ItosDevice extends CordovaPlugin {
             mPrinter.initPrinter();
 
             for(int i=0; i<data.length(); i++){
-                mPrinter.appendStr( data.getOptString(i), FONT_SIZE_NORMAL, Align.LEFT, false );
+                try{mPrinter.appendStr( data.getString(i), FONT_SIZE_NORMAL, Align.LEFT, false );}catch(JSONException e){}
             }
 
             int retCode = mPrinter.startPrint( true, new PrinterCallbacks() {
