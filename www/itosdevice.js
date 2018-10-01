@@ -1,4 +1,3 @@
-cordova.define("itos-device-plugin.ItosDevice", function(require, exports, module) { 
 /**
  * cordova is available under *either* the terms of the modified BSD license *or* the
  * MIT License (2008). See http://opensource.org/licenses/alphabetical for full text.
@@ -82,6 +81,5 @@ ItosDevice.prototype.print = function (successCallback, errorCallback, config) {
     };
 
 var itosDevice = new ItosDevice();
-console.log(123123);
+console.log('Itos Device Plugin Loaded');
 module.exports = itosDevice;
-});
