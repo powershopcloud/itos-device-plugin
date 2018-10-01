@@ -32,53 +32,27 @@ function ItosDevice() {
  */
 ItosDevice.prototype.print = function (successCallback, errorCallback, config) {
 
-        if (config instanceof Array) {
-            // do nothing
-        } else {
-            if (typeof(config) === 'object') {
-                config = [ config ];
-            } else {
-                config = [];
-            }
-        }
+    if (errorCallback == null) {
+        errorCallback = function () {
+        };
+    }
 
-        if (errorCallback == null) {
-            errorCallback = function () {
-            };
-        }
+    if (typeof errorCallback != "function") {
+        console.log("ItosDevice.print failure: failure parameter not a function");
+        return;
+    }
 
-        if (typeof errorCallback != "function") {
-            console.log("ItosDevice.print failure: failure parameter not a function");
-            return;
-        }
+    if (typeof successCallback != "function") {
+        console.log("ItosDevice.print failure: success callback parameter must be a function");
+        return;
+    }
 
-        if (typeof successCallback != "function") {
-            console.log("ItosDevice.print failure: success callback parameter must be a function");
-            return;
-        }
+    exec(successCallback, errorCallback, 'ItosDevice', 'print', [
+        { "data": data}
+    ]);
 
-        if (scanInProgress) {
-            errorCallback('Scan is already in progress');
-            return;
-        }
-
-        scanInProgress = true;
-
-
-        exec(
-            function(result) {
-                scanInProgress = false;
-                successCallback(result);
-            },
-            function(error) {
-                scanInProgress = false;
-                errorCallback(error);
-            },
-            'ItosDevice',
-            'print',
-            config
-        );
-    };
+       
+};
 
 var itosDevice = new ItosDevice();
 console.log('Itos Device Plugin Loaded');
