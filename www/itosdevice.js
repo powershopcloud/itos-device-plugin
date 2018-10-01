@@ -30,7 +30,7 @@ function ItosDevice() {
  * @param {Function} errorCallback
  * @param config
  */
-ItosDevice.prototype.print = function (successCallback, errorCallback, config) {
+ItosDevice.prototype.print = function (successCallback, errorCallback, data) {
 
     if (errorCallback == null) {
         errorCallback = function () {
