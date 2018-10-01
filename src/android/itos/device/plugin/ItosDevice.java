@@ -128,10 +128,11 @@ public class ItosDevice extends CordovaPlugin {
         this.requestArgs = args;
 
         if (action.equals(PRINT)) {
-            //JSONObject obj = args.optJSONObject(0);
+            JSONObject obj = args.optJSONObject(0);
             
-            /*String type = obj.optString(TYPE);
-            String data = obj.optString(DATA);
+            
+            //String type = obj.optString(TYPE);
+            JSONArray data = obj.optJSONArray(DATA);
 
             // If the type is null then force the type to text
             if (type == null) {
@@ -139,25 +140,16 @@ public class ItosDevice extends CordovaPlugin {
             }
 
             if (data == null) {
-                callbackContext.error("User did not specify data to encode");
+                callbackContext.error("User did not specify data to print");
                 return true;
             }
 
-            encode(type, data);*/
             mPrinter = new Printer(this.cordova.getActivity().getBaseContext());
             mPrinter.initPrinter();
 
-            mPrinter.appendStr( "Business Name: Application Test", FONT_SIZE_NORMAL, Align.LEFT, false );
-            mPrinter.appendStr( "Business number:123456789012345", FONT_SIZE_NORMAL, Align.LEFT, false );
-            mPrinter.appendStr( "---------------------------", FONT_SIZE_NORMAL, Align.LEFT, false );
-            mPrinter.appendStr( "Cardholder's signature:", FONT_SIZE_NORMAL, Align.LEFT, false );
-            mPrinter.appendStr( "\n", FONT_SIZE_NORMAL, Align.LEFT, false );
-            mPrinter.appendStr( "\n", FONT_SIZE_NORMAL, Align.LEFT, false );
-            mPrinter.appendStr( "\n", FONT_SIZE_NORMAL, Align.LEFT, false );
-            mPrinter.appendStr( "---------------------------", FONT_SIZE_NORMAL, Align.LEFT, false );
-            mPrinter.appendStr( "Business", FONT_SIZE_NORMAL, Align.RIGHT, false );
-            mPrinter.appendStr( "\n", FONT_SIZE_NORMAL, Align.LEFT, false );
-            mPrinter.appendStr( "\n", FONT_SIZE_NORMAL, Align.LEFT, false );
+            for(int i=0; i<data.length(); i++){
+                mPrinter.appendStr( data.getString(i), FONT_SIZE_NORMAL, Align.LEFT, false );
+            }
 
             int retCode = mPrinter.startPrint( true, new PrinterCallbacks() {
 
