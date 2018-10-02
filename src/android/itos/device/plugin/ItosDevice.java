@@ -8,41 +8,15 @@
  */
 package com.phonegap.plugins.itosdevice;
 
+import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.content.pm.PackageManager;
 
-import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.CallbackContext;
-import org.apache.cordova.PluginResult;
-import org.apache.cordova.PluginResult.Status;
-import org.apache.cordova.PermissionHelper;
-
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
-import android.view.View;
-import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.itos.sdk.cm5.deviceLibrary.Beeper.Beeper;
 import com.itos.sdk.cm5.deviceLibrary.DeviceResult;
@@ -54,12 +28,6 @@ import com.itos.sdk.cm5.deviceLibrary.Printer.PrinterCallbacks;
 import com.itos.sdk.cm5.deviceLibrary.scanner.Scanner;
 import com.itos.sdk.cm5.deviceLibrary.scanner.ScannerCallbacks;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 /**
  * This calls out to the ZXing barcode reader and returns the result.
  *
@@ -70,28 +38,12 @@ public class ItosDevice extends CordovaPlugin {
 
     private static final String PRINT = "print";
     private static final String BEEP = "beep";
-    //private static final String ENCODE = "encode";
-    private static final String CANCELLED = "cancelled";
-    private static final String FORMAT = "format";
-    private static final String TEXT = "text";
+    private static final String LIGHT = "light";
     private static final String DATA = "data";
-    private static final String TYPE = "type";
-    private static final String PREFER_FRONTCAMERA = "preferFrontCamera";
-    private static final String ORIENTATION = "orientation";
-    private static final String SHOW_FLIP_CAMERA_BUTTON = "showFlipCameraButton";
-    private static final String RESULTDISPLAY_DURATION = "resultDisplayDuration";
-    private static final String SHOW_TORCH_BUTTON = "showTorchButton";
-    private static final String TORCH_ON = "torchOn";
-    private static final String FORMATS = "formats";
-    private static final String PROMPT = "prompt";
-    private static final String TEXT_TYPE = "TEXT_TYPE";
-    private static final String EMAIL_TYPE = "EMAIL_TYPE";
-    private static final String PHONE_TYPE = "PHONE_TYPE";
-    private static final String SMS_TYPE = "SMS_TYPE";
+
 
     private static final String LOG_TAG = "ItosDevice";
 
-    private String [] permissions = { Manifest.permission.CAMERA };
 
     private JSONArray requestArgs;
     private CallbackContext callbackContext;
@@ -106,6 +58,7 @@ public class ItosDevice extends CordovaPlugin {
      * Constructor.
      */
     public ItosDevice() {
+
     }
 
     /**
@@ -125,23 +78,22 @@ public class ItosDevice extends CordovaPlugin {
      * @sa https://github.com/apache/cordova-android/blob/master/framework/src/org/apache/cordova/CordovaPlugin.java
      */
     @Override
-    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) {
+    public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) {
 
         this.callbackContext = callbackContext;
         this.requestArgs = args;
 
         if (action.equals(PRINT)) {
             JSONObject obj = args.optJSONObject(0);
-            
-            
-            //String type = obj.optString(TYPE);
+
+
             JSONArray data = obj.optJSONArray(DATA);
 
             if (data == null) {
                 callbackContext.error("User did not specify data to print");
                 return true;
             }
-            
+
             mPrinter = new Printer(this.cordova.getActivity().getBaseContext());
             mPrinter.initPrinter();
 
@@ -153,21 +105,37 @@ public class ItosDevice extends CordovaPlugin {
 
                 @Override
                 public void onPrintResult( int retCode ) {
-                    //PluginResult result = new PluginResult(PluginResult.Status.RESULT_OK);
-                    //this.callbackContext.sendPluginResult(result);
-                    //showMessage( String.format( "PrintResult: %d", retCode ) );
+                    mPrinter.cutPaper();
+                    PluginResult result = new PluginResult(PluginResult.Status.OK);
+                    callbackContext.sendPluginResult(result);
                 }
+
             } );
-            
+
         }else if(action.equals(BEEP)){
             JSONObject obj = args.optJSONObject(0);
-            int time = Integer.parseInt(obj.optString('seconds'));
-            if(time == null){
-                time = 200;
-            }
-            mBeeper = new Beeper( this );
+            int time = Integer.parseInt(obj.optString("seconds"));
+            mBeeper = new Beeper( this.cordova.getActivity().getBaseContext() );
             mBeeper.beep( time );
-        }else{
+        } else if (action.equals(LIGHT)) {
+            JSONObject obj = args.optJSONObject(0);
+            String color = obj.optString("color");
+            boolean isOn = obj.optBoolean("isOn");
+            if(mLed == null){
+                mLed = new Led(this.cordova.getActivity().getBaseContext());
+            }
+            LightMode lightMode;
+            if(color.equals("BLUE")){
+                lightMode = LightMode.BLUE;
+            }else if(color.equals("RED")){
+                lightMode =  LightMode.RED;
+            }else if(color.equals("GREEN")){
+                lightMode = LightMode.GREEN;
+            }else{
+                lightMode = LightMode.YELLOW;
+            }
+            mLed.setLed(lightMode, isOn);
+        } else {
             return false;
         }
         return true;

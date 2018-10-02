@@ -78,6 +78,30 @@ ItosDevice.prototype.beep = function (successCallback, errorCallback, seconds) {
        
 };
 
+ItosDevice.prototype.light = function (successCallback, errorCallback, color, isOn) {
+
+    if (errorCallback == null) {
+        errorCallback = function () {
+        };
+    }
+
+    if (typeof errorCallback != "function") {
+        console.log("ItosDevice.light failure: failure parameter not a function");
+        return;
+    }
+
+    if (typeof successCallback != "function") {
+        console.log("ItosDevice.light failure: success callback parameter must be a function");
+        return;
+    }
+
+    exec(successCallback, errorCallback, 'ItosDevice', 'light', [
+        { "color": color, "isOn": isOn}
+    ]);
+
+       
+};
+
 var itosDevice = new ItosDevice();
 console.log('Itos Device Plugin Loaded');
 module.exports = itosDevice;
