@@ -97,7 +97,9 @@ public class ItosDevice extends CordovaPlugin {
 
     private final int FONT_SIZE_NORMAL = 24;
 
-     private Printer mPrinter;
+    private Printer mPrinter;
+    private Led mLed;
+    private Beeper mBeeper;
 
     /**
      * Constructor.
