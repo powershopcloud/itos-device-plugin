@@ -140,7 +140,7 @@ public class ItosDevice extends CordovaPlugin {
                 callbackContext.error("User did not specify data to print");
                 return true;
             }
-            mLed.setLed("blue", true);
+            mLed.setLed(LightMode.get('blue'), true);
             mPrinter = new Printer(this.cordova.getActivity().getBaseContext());
             mPrinter.initPrinter();
 
