@@ -85,8 +85,6 @@ public class ItosDevice extends CordovaPlugin {
 
         if (action.equals(PRINT)) {
             JSONObject obj = args.optJSONObject(0);
-
-
             JSONArray data = obj.optJSONArray(DATA);
 
             if (data == null) {
@@ -108,7 +106,6 @@ public class ItosDevice extends CordovaPlugin {
                     mPrinter.cutPaper();
                     callbackContext.success("Printed Done");
                 }
-
             } );
 
         }else if(action.equals(BEEP)){

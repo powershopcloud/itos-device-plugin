@@ -9,26 +9,20 @@
 
 var exec = cordova.require("cordova/exec");
 
-var scanInProgress = false;
-
 /**
  * Constructor.
  *
- * @returns {BarcodeScanner}
+ * @returns {ItosDevice}
  */
 function ItosDevice() {
 }
 
 /**
- * Read code from scanner.
+ * Print text with Itos Device.
  *
- * @param {Function} successCallback This function will recieve a result object: {
-         *        text : '12345-mock',    // The code that was scanned.
-         *        format : 'FORMAT_NAME', // Code format.
-         *        cancelled : true/false, // Was canceled.
-         *    }
+ * @param {Function} successCallback 
  * @param {Function} errorCallback
- * @param config
+ * @param data
  */
 ItosDevice.prototype.print = function (successCallback, errorCallback, data) {
 
@@ -54,6 +48,14 @@ ItosDevice.prototype.print = function (successCallback, errorCallback, data) {
        
 };
 
+/**
+ * Beep with Itos Device.
+ *
+ * @param {Function} successCallback 
+ * @param {Function} errorCallback
+ * @param seconds
+ */
+
 ItosDevice.prototype.beep = function (successCallback, errorCallback, seconds) {
 
     if (errorCallback == null) {
@@ -78,6 +80,17 @@ ItosDevice.prototype.beep = function (successCallback, errorCallback, seconds) {
        
 };
 
+
+
+/**
+ * Change leds status
+ *
+ * @param {Function} successCallback 
+ * @param {Function} errorCallback
+ * @param color
+ * @param isOn
+ * 
+ */
 ItosDevice.prototype.light = function (successCallback, errorCallback, color, isOn) {
 
     if (errorCallback == null) {
