@@ -8,25 +8,25 @@
  */
 package com.phonegap.plugins.itosdevice;
 
-import org.apache.cordova.CallbackContext;
-import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.PluginResult;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+        import org.apache.cordova.CallbackContext;
+        import org.apache.cordova.CordovaPlugin;
+        import org.apache.cordova.PluginResult;
+        import org.json.JSONArray;
+        import org.json.JSONException;
+        import org.json.JSONObject;
 
-import android.Manifest;
+        import android.Manifest;
 
 
-import com.itos.sdk.cm5.deviceLibrary.Beeper.Beeper;
-import com.itos.sdk.cm5.deviceLibrary.DeviceResult;
-import com.itos.sdk.cm5.deviceLibrary.Led.Led;
-import com.itos.sdk.cm5.deviceLibrary.Led.LightMode;
-import com.itos.sdk.cm5.deviceLibrary.Printer.Align;
-import com.itos.sdk.cm5.deviceLibrary.Printer.Printer;
-import com.itos.sdk.cm5.deviceLibrary.Printer.PrinterCallbacks;
-import com.itos.sdk.cm5.deviceLibrary.scanner.Scanner;
-import com.itos.sdk.cm5.deviceLibrary.scanner.ScannerCallbacks;
+        import com.itos.sdk.cm5.deviceLibrary.Beeper.Beeper;
+        import com.itos.sdk.cm5.deviceLibrary.DeviceResult;
+        import com.itos.sdk.cm5.deviceLibrary.Led.Led;
+        import com.itos.sdk.cm5.deviceLibrary.Led.LightMode;
+        import com.itos.sdk.cm5.deviceLibrary.Printer.Align;
+        import com.itos.sdk.cm5.deviceLibrary.Printer.Printer;
+        import com.itos.sdk.cm5.deviceLibrary.Printer.PrinterCallbacks;
+        import com.itos.sdk.cm5.deviceLibrary.scanner.Scanner;
+        import com.itos.sdk.cm5.deviceLibrary.scanner.ScannerCallbacks;
 
 /**
  * This calls out to the ZXing barcode reader and returns the result.
@@ -106,8 +106,7 @@ public class ItosDevice extends CordovaPlugin {
                 @Override
                 public void onPrintResult( int retCode ) {
                     mPrinter.cutPaper();
-                    PluginResult result = new PluginResult(PluginResult.Status.OK);
-                    callbackContext.sendPluginResult(result);
+                    callbackContext.success("Printed Done");
                 }
 
             } );
@@ -117,8 +116,7 @@ public class ItosDevice extends CordovaPlugin {
             int time = Integer.parseInt(obj.optString("seconds"));
             mBeeper = new Beeper( this.cordova.getActivity().getBaseContext() );
             mBeeper.beep( time );
-            PluginResult result = new PluginResult(PluginResult.Status.OK);
-            callbackContext.sendPluginResult(result);
+            callbackContext.success("Beep Finished");
         } else if (action.equals(LIGHT)) {
             JSONObject obj = args.optJSONObject(0);
             String color = obj.optString("color");
@@ -137,8 +135,10 @@ public class ItosDevice extends CordovaPlugin {
                 lightMode = LightMode.YELLOW;
             }
             mLed.setLed(lightMode, isOn);
-            PluginResult result = new PluginResult(PluginResult.Status.OK);
-            callbackContext.sendPluginResult(result);
+
+            String encendido = isOn ? " is on" : " is off";
+
+            callbackContext.success("Led " + color + encendido);
         } else {
             return false;
         }
