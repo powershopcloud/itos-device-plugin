@@ -117,6 +117,8 @@ public class ItosDevice extends CordovaPlugin {
             int time = Integer.parseInt(obj.optString("seconds"));
             mBeeper = new Beeper( this.cordova.getActivity().getBaseContext() );
             mBeeper.beep( time );
+            PluginResult result = new PluginResult(PluginResult.Status.OK);
+            callbackContext.sendPluginResult(result);
         } else if (action.equals(LIGHT)) {
             JSONObject obj = args.optJSONObject(0);
             String color = obj.optString("color");
@@ -135,6 +137,8 @@ public class ItosDevice extends CordovaPlugin {
                 lightMode = LightMode.YELLOW;
             }
             mLed.setLed(lightMode, isOn);
+            PluginResult result = new PluginResult(PluginResult.Status.OK);
+            callbackContext.sendPluginResult(result);
         } else {
             return false;
         }
