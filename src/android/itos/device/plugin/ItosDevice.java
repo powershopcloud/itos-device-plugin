@@ -142,13 +142,13 @@ public class ItosDevice extends CordovaPlugin {
             }
             
             mBeeper.beep(200);
-            
+            /*
             for(int i = 0; i <= 3; i++) {
               mLed.setLed(LightMode.get(i), false);
             }
             
             mLed.setLed(LightMode.get(2), true);
-            
+            */
             mPrinter = new Printer(this.cordova.getActivity().getBaseContext());
             mPrinter.initPrinter();
 
