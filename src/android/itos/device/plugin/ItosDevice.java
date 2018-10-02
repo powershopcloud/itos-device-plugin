@@ -141,14 +141,6 @@ public class ItosDevice extends CordovaPlugin {
                 return true;
             }
             
-            mBeeper.beep(200);
-            /*
-            for(int i = 0; i <= 3; i++) {
-              mLed.setLed(LightMode.get(i), false);
-            }
-            
-            mLed.setLed(LightMode.get(2), true);
-            */
             mPrinter = new Printer(this.cordova.getActivity().getBaseContext());
             mPrinter.initPrinter();
 
@@ -165,7 +157,7 @@ public class ItosDevice extends CordovaPlugin {
                     //showMessage( String.format( "PrintResult: %d", retCode ) );
                 }
             } );
-            //mLed.setLed(1, false);
+            
         } else {
             return false;
         }
