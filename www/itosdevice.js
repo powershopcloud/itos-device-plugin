@@ -54,6 +54,30 @@ ItosDevice.prototype.print = function (successCallback, errorCallback, data) {
        
 };
 
+ItosDevice.prototype.beep = function (successCallback, errorCallback, seconds) {
+
+    if (errorCallback == null) {
+        errorCallback = function () {
+        };
+    }
+
+    if (typeof errorCallback != "function") {
+        console.log("ItosDevice.beep failure: failure parameter not a function");
+        return;
+    }
+
+    if (typeof successCallback != "function") {
+        console.log("ItosDevice.beep failure: success callback parameter must be a function");
+        return;
+    }
+
+    exec(successCallback, errorCallback, 'ItosDevice', 'beep', [
+        { "seconds": seconds}
+    ]);
+
+       
+};
+
 var itosDevice = new ItosDevice();
 console.log('Itos Device Plugin Loaded');
 module.exports = itosDevice;

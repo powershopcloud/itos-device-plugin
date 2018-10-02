@@ -69,6 +69,7 @@ public class ItosDevice extends CordovaPlugin {
     public static final int REQUEST_CODE = 0x0ba7c0de;
 
     private static final String PRINT = "print";
+    private static final String BEEP = "beep";
     //private static final String ENCODE = "encode";
     private static final String CANCELLED = "cancelled";
     private static final String FORMAT = "format";
@@ -158,7 +159,15 @@ public class ItosDevice extends CordovaPlugin {
                 }
             } );
             
-        } else {
+        }else if(action.equals(BEEP)){
+            JSONObject obj = args.optJSONObject(0);
+            int time = Integer.parseInt(obj.optString('seconds'));
+            if(time == null){
+                time = 200;
+            }
+            mBeeper = new Beeper( this );
+            mBeeper.beep( time );
+        }else{
             return false;
         }
         return true;
