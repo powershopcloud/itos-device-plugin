@@ -103,7 +103,7 @@ public class ItosDevice extends CordovaPlugin {
 
                 @Override
                 public void onPrintResult( int retCode ) {
-                    mPrinter.cutPaper();
+                    //mPrinter.cutPaper();
                     callbackContext.success("Printed Done");
                 }
             } );
