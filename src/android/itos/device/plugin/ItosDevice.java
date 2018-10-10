@@ -8,25 +8,29 @@
  */
 package com.phonegap.plugins.itosdevice;
 
-        import org.apache.cordova.CallbackContext;
-        import org.apache.cordova.CordovaPlugin;
-        import org.apache.cordova.PluginResult;
-        import org.json.JSONArray;
-        import org.json.JSONException;
-        import org.json.JSONObject;
+import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.PluginResult;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-        import android.Manifest;
+import android.Manifest;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 
 
-        import com.itos.sdk.cm5.deviceLibrary.Beeper.Beeper;
-        import com.itos.sdk.cm5.deviceLibrary.DeviceResult;
-        import com.itos.sdk.cm5.deviceLibrary.Led.Led;
-        import com.itos.sdk.cm5.deviceLibrary.Led.LightMode;
-        import com.itos.sdk.cm5.deviceLibrary.Printer.Align;
-        import com.itos.sdk.cm5.deviceLibrary.Printer.Printer;
-        import com.itos.sdk.cm5.deviceLibrary.Printer.PrinterCallbacks;
-        import com.itos.sdk.cm5.deviceLibrary.scanner.Scanner;
-        import com.itos.sdk.cm5.deviceLibrary.scanner.ScannerCallbacks;
+import com.itos.sdk.cm5.deviceLibrary.Beeper.Beeper;
+import com.itos.sdk.cm5.deviceLibrary.DeviceResult;
+import com.itos.sdk.cm5.deviceLibrary.Led.Led;
+import com.itos.sdk.cm5.deviceLibrary.Led.LightMode;
+import com.itos.sdk.cm5.deviceLibrary.Printer.Align;
+import com.itos.sdk.cm5.deviceLibrary.Printer.BarcodeFormat;
+import com.itos.sdk.cm5.deviceLibrary.Printer.Printer;
+import com.itos.sdk.cm5.deviceLibrary.Printer.PrinterCallbacks;
+import com.itos.sdk.cm5.deviceLibrary.scanner.Scanner;
+import com.itos.sdk.cm5.deviceLibrary.scanner.ScannerCallbacks;
 
 /**
  * This calls out to the ZXing barcode reader and returns the result.
@@ -96,7 +100,38 @@ public class ItosDevice extends CordovaPlugin {
             mPrinter.initPrinter();
 
             for(int i=0; i<data.length(); i++){
-                try{mPrinter.appendStr( data.getString(i), FONT_SIZE_NORMAL, Align.LEFT, false );}catch(JSONException e){}
+                try{
+                    JSONObject line = data.getJSONObject(i);
+                    String content =  line.optString("content","");
+                    String align = line.optString("align","LEFT");
+                    Align alignValue = Align.LEFT;
+                    if(align.equals("RIGHT")){
+                        alignValue = Align.RIGHT;
+                    }else if(align.equals("CENTER")){
+                        alignValue = Align.CENTER;
+                    }
+                    int height = line.optInt("height",0);
+
+                    if(line.getString("tipo").equals("string")){
+                        int fontSize = line.optInt("fontsize",FONT_SIZE_NORMAL);
+                        boolean isBold = line.optBoolean("bold",false);
+                        mPrinter.appendStr(content, fontSize,alignValue, isBold );
+                    }else if(line.getString("tipo").equals("barcode")){
+
+                        int margin = line.optInt("margin",0);
+                        int scale = line.optInt("scale",0);
+                        String barcodeFormatString = line.optString("barcodetype","EAN_13");
+                        mPrinter.appendBarcode(content,height,margin,scale, BarcodeFormat.valueOf(barcodeFormatString),alignValue);
+                    }else if(line.getString("tipo").equals("qr")){
+                        mPrinter.appendQRcode(content,height,alignValue);
+                    }else if(line.get("tipo").equals("image")){
+                        byte[] decodedString = Base64.decode(content, Base64.DEFAULT);
+                        Bitmap imageBmp = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        mPrinter.appendImage(imageBmp, alignValue);
+                    }
+                }catch(JSONException e){
+
+                }
             }
 
             int retCode = mPrinter.startPrint( true, new PrinterCallbacks() {
